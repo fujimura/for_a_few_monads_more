@@ -348,7 +348,7 @@ addOne :: Int -> Int
 addOne = (+ 1) >>= \a -> return a
 ```
 
-右辺を簡約してみます。
+右辺を簡約すると、本当に関数になりました！
 
 ```haskell
 (+ 1) >>= (\a -> return a )
@@ -359,15 +359,12 @@ addOne = (+ 1) >>= \a -> return a
                              (+ 1)      --  remove eta reduction
 ```
 
-本当に関数になりました！
 
 State
 ===
 
-スタックをStateモナドで
-===
-
 定義
+===
 
 ```haskell
 newtype State s a = State { runState :: s -> (a, s) }
@@ -379,6 +376,9 @@ instance Monad (State s) where
             (State g) = f a     -- 渡された関数にaを適用、次の状態付き計算gを手に入れる
         in g newState           -- 次の状態付き計算gを新しい状態newStateで実行
 ```
+
+スタックをStateモナドで
+===
 
 > -- import Control.Monad.State
 > type Stack = [Int]
@@ -418,9 +418,6 @@ threeCoins gen =
 
 こう書けます。
 
-> -- import System.Random
-> -- import Control.Monad.State
->
 > randomSt :: (RandomGen g, Random a) => State g a
 > randomSt = state random
 >
